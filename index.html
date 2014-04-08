@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carreras Coruña</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <!-- <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" /> -->
+  <link rel="stylesheet" href="style.css" type="text/css"/><link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" />
+        <![endif]-->
+      </head>
+      <body>
+        <div id="map"></div>
+        <div id="layer_selector" class="cartodb-infobox">
+          <ul>
+            <li data="all" class="selected">TODAS</li>
+            <li data="Running">Running</sup></li>
+            <li data="Cross">Cross</li>
+            <li data="Triatlón">Triatlón</sup></li>
+          </ul>
+        </div>
+        <!-- include cartodb.js library -->
+        <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+
+        <script>
+      // create layer selector
+      function createSelector(layer) {
+        var sql = new cartodb.SQL({ user: 'documentation' });
+
+        var $options = $('#layer_selector li');
+        $options.click(function(e) {
+          // get the area of the selected layer
+          var $li = $(e.target);
+          var tipo = $li.attr('data');
+
+          // deselect all and select the clicked one
+          $options.removeClass('selected');
+          $li.addClass('selected');
+
+          // create query based on data from the layer
+          var query = "SELECT * FROM carreras_coru_u00f1a";
+
+          if(tipo !== 'all') {
+            query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
+          }
+
+          // change the query in the layer to update the map
+          layer.setSQL(query);
+        });
+      }
+
+        function main() {
+          cartodb.createVis('map', 'http://psanxiao.cartodb.com/api/v2/viz/f283f2c0-8539-11e3-a110-3085a9a9563c/viz.json', {
+            shareable: false,
+            title: false,
+            description: false,
+            search: false,
+            tiles_loader: true,
+            center_lat: 43.36,
+            center_lon: -8.41,
+            zoom: 14
+          })
+          .done(function(vis, layers) {
+          // layer 0 is the base layer, layer 1 is cartodb layer
+          // setInteraction is disabled by default
+          layers[1].setInteraction(true);
+          layers[1].on('featureOver', function(e, pos, latlng, data) {
+            cartodb.log.log(e, pos, latlng, data);
+          });
+
+          var subLayer = layers[1].getSubLayer(0);
+          createSelector(subLayer);
+        })
+          .error(function(err) {
+            console.log(err);
+          });
+        }
+
+        window.onload = main;
+        </script>
+      </body>
+      </html>
