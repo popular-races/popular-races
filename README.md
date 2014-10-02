@@ -1,2 +1,3 @@
-popular-races
+
+Popular Races
 =============
