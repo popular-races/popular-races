@@ -1,53 +1,62 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Carreras Coruña</title>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-  <!-- <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" /> -->
-  <link rel="stylesheet" href="style.css" type="text/css"/><link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
-    <!--[if lte IE 8]>
-        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" />
-        <![endif]-->
-      </head>
-      <body>
-        <div id="map"></div>
-        <div id="layer_selector" class="cartodb-infobox">
-          <ul>
-            <li data="all" class="selected">TODAS</li>
-            <li data="Running">Running</sup></li>
-            <li data="Triatlón">Triatlón</sup></li>
-          </ul>
-        </div>
-        <!-- include cartodb.js library -->
-        <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+  <head>
+    <title>Carreras Coruña</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <!-- <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" /> -->
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link rel="stylesheet" href="sidebar.css" type="text/css"/>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+      <!--[if lte IE 8]>
+          <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" />
+          <![endif]-->
+  </head>
+        
+  <body>
 
-        <script>
-      // create layer selector
-      function createSelector(layer) {
-        var sql = new cartodb.SQL({ user: 'documentation' });
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <a class="navbar-brand" href="#">Carreras Coruña</a>
+    </div>
+    <div class="col-sm-11 blog-main" id="map"></div>
+    <div class="col-sm-1" id="sidebar">
+      <h5>Filtrar por tipo:</h5>
+      <div id="type_selector" class="list-group">
+        <ul>
+          <li data="all" class="list-group-item active">TODAS</li>
+          <li data="Running" class="list-group-item">Running</sup></li>
+          <li data="Triatlón" class="list-group-item">Triatlón</sup></li>
+        </ul>
+      </div>
+    </div>
 
-        var $options = $('#layer_selector li');
-        $options.click(function(e) {
-          // get the area of the selected layer
-          var $li = $(e.target);
-          var tipo = $li.attr('data');
+    <script>
+        // create layer selector
+        function createSelector(layer) {
+          var sql = new cartodb.SQL({ user: 'documentation' });
 
-          // deselect all and select the clicked one
-          $options.removeClass('selected');
-          $li.addClass('selected');
+          var $options = $('#type_selector li');
+          $options.click(function(e) {
+            // get the area of the selected layer
+            var $li = $(e.target);
+            var tipo = $li.attr('data');
 
-          // create query based on data from the layer
-          var query = "SELECT * FROM carreras_coru_u00f1a";
+            // deselect all and select the clicked one
+            $options.removeClass('active');
+            $li.addClass('active');
 
-          if(tipo !== 'all') {
-            query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
-          }
+            // create query based on data from the layer
+            var query = "SELECT * FROM carreras_coru_u00f1a";
 
-          // change the query in the layer to update the map
-          layer.setSQL(query);
-        });
-      }
+            if(tipo !== 'all') {
+              query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
+            }
+
+            // change the query in the layer to update the map
+            layer.setSQL(query);
+          });
+        }
 
         function main() {
           cartodb.createVis('map', 'http://psanxiao.cartodb.com/api/v2/viz/f283f2c0-8539-11e3-a110-3085a9a9563c/viz.json', {
@@ -61,22 +70,25 @@
             zoom: 14
           })
           .done(function(vis, layers) {
-          // layer 0 is the base layer, layer 1 is cartodb layer
-          // setInteraction is disabled by default
-          layers[1].setInteraction(true);
-          layers[1].on('featureOver', function(e, pos, latlng, data) {
-            cartodb.log.log(e, pos, latlng, data);
-          });
+            // layer 0 is the base layer, layer 1 is cartodb layer
+            // setInteraction is disabled by default
+            layers[1].setInteraction(true);
+            layers[1].on('featureOver', function(e, pos, latlng, data) {
+              cartodb.log.log(e, pos, latlng, data);
+            });
 
-          var subLayer = layers[1].getSubLayer(0);
-          createSelector(subLayer);
-        })
+            var subLayer = layers[1].getSubLayer(0);
+            createSelector(subLayer);
+          })
           .error(function(err) {
             console.log(err);
           });
         }
 
         window.onload = main;
-        </script>
-      </body>
-      </html>
+    </script>
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
