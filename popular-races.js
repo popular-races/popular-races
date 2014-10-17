@@ -23,6 +23,32 @@ function filterByType(layer) {
           });
 }
 
+function filterByDate(layer) {
+  var sql = new cartodb.SQL({ user: 'documentation' });
+
+  var $options = $('#date_selector li');
+  $options.click(function(e) {
+            // get the area of the selected layer
+            var $li = $(e.target);
+            var date = $li.attr('data');
+
+            // deselect all and select the clicked one
+            $options.removeClass('active');
+            $li.addClass('active');
+
+            // create query based on data from the layer
+            var query = "SELECT * FROM carreras_coru_u00f1a";
+
+            if(date !== 'all') {
+              query = "SELECT * FROM carreras_coru_u00f1a " +
+                      "WHERE date between current_timestamp AND current_timestamp + interval '" + date + "'";
+            }
+
+            // change the query in the layer to update the map
+            layer.setSQL(query);
+          });
+}
+
 function main() {
   cartodb.createVis('map', 'http://psanxiao.cartodb.com/api/v2/viz/f283f2c0-8539-11e3-a110-3085a9a9563c/viz.json', {
     shareable: false,
@@ -45,6 +71,7 @@ function main() {
 
             var subLayer = layers[1].getSubLayer(0);
             filterByType(subLayer);
+            filterByDate(subLayer);
           })
   .error(function(err) {
     console.log(err);

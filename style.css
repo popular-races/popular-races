@@ -15,12 +15,12 @@ html, body {
     padding-top: 50px;
   }
 
-  #type_selector li:hover {
+  #type_selector, #date_selector li:hover {
     background-color: #F0F0F0;
     cursor: pointer;
   }
 
-  #type_selector li.active:hover {
+  #type_selector, #date_selector li.active:hover {
     background-color: #428bca;
   }
   
