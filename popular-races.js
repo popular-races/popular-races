@@ -103,6 +103,8 @@ function main() {
       var sublayer = layer.getSubLayer(0);
 
       sublayers.push(sublayer);
+      filterByType(sublayer);
+      filterByDate(sublayer);
       detectUserLocation();
     }).on('error', function() {
       //log the error
