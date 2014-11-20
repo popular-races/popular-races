@@ -83,31 +83,30 @@ function mapToPosition(position) {
 }
 
 function main() {
-    // initiate leaflet map
-map = new L.Map('map', { 
-      center: [43.36,-6.41],
-      zoom: 14
-    })
+  map = new L.Map('map', { 
+        center: [43.36,-8.41],
+        zoom: 14
+      })
 
-    L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
-      attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
-    }).addTo(map);
+      L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
+        attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+      }).addTo(map);
 
-var layerUrl = 'http://psanxiao.cartodb.com/api/v2/viz/f283f2c0-8539-11e3-a110-3085a9a9563c/viz.json';
+  var layerUrl = 'http://psanxiao.cartodb.com/api/v2/viz/f283f2c0-8539-11e3-a110-3085a9a9563c/viz.json';
 
-var sublayers = [];
+  var sublayers = [];
 
-cartodb.createLayer(map, layerUrl)
-  .addTo(map)
-  .on('done', function(layer) {
+  cartodb.createLayer(map, layerUrl)
+    .addTo(map)
+    .on('done', function(layer) {
 
-    var sublayer = layer.getSubLayer(0);
+      var sublayer = layer.getSubLayer(0);
 
-    sublayers.push(sublayer);
-    detectUserLocation();
-  }).on('error', function() {
-    //log the error
-  });
+      sublayers.push(sublayer);
+      detectUserLocation();
+    }).on('error', function() {
+      //log the error
+    });
 }
 
 // function main() {
