@@ -1,4 +1,7 @@
 var map;
+var tipo = 'all';
+var date = 'all';
+var query;
 
 function filterByType(layer) {
   var sql = new cartodb.SQL({ user: 'documentation' });
@@ -7,18 +10,13 @@ function filterByType(layer) {
   $options.click(function(e) {
             // get the area of the selected layer
             var $li = $(e.target);
-            var tipo = $li.attr('data');
+            tipo = $li.attr('data');
 
             // deselect all and select the clicked one
             $options.removeClass('active');
             $li.addClass('active');
 
-            // create query based on data from the layer
-            var query = "SELECT * FROM carreras_coru_u00f1a";
-
-            if(tipo !== 'all') {
-              query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
-            }
+            query = getQuery();
 
             // change the query in the layer to update the map
             layer.setSQL(query);
@@ -32,23 +30,31 @@ function filterByDate(layer) {
   $options.click(function(e) {
             // get the area of the selected layer
             var $li = $(e.target);
-            var date = $li.attr('data');
+            date = $li.attr('data');
 
             // deselect all and select the clicked one
             $options.removeClass('active');
             $li.addClass('active');
 
-            // create query based on data from the layer
-            var query = "SELECT * FROM carreras_coru_u00f1a";
-
-            if(date !== 'all') {
-              query = "SELECT * FROM carreras_coru_u00f1a " +
-                      "WHERE date between current_timestamp AND current_timestamp + interval '" + date + "'";
-            }
+            query = getQuery();
 
             // change the query in the layer to update the map
             layer.setSQL(query);
           });
+}
+
+function getQuery() {
+  if(date !== 'all' && tipo !== 'all') {
+    query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
+    + " AND date between current_timestamp AND current_timestamp + interval '" + date + "'";
+  }else if (tipo !== 'all') {
+    query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
+  }else if (date !== 'all') {
+    query = "SELECT * FROM carreras_coru_u00f1a WHERE date between current_timestamp AND current_timestamp + interval '" + date + "'";
+  }else {
+    query = "SELECT * FROM carreras_coru_u00f1a";
+  }
+  return query;
 }
 
 // credit: http://html5doctor.com/finding-your-position-with-geolocation/
