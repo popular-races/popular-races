@@ -1,6 +1,9 @@
 var map;
 var tipo = 'all';
 var date = 'all';
+var distance = 'all';
+var lat = -8.48;
+var lon = 43.40;
 var query;
 
 function filterByType(layer) {
@@ -43,10 +46,31 @@ function filterByDate(layer) {
           });
 }
 
+function filterByDistance(layer) {
+  var sql = new cartodb.SQL({ user: 'documentation' });
+
+  var $options = $('#distance_selector li');
+  $options.click(function(e) {
+            // get the area of the selected layer
+            var $li = $(e.target);
+            distance = $li.attr('data');
+
+            // deselect all and select the clicked one
+            $options.removeClass('active');
+            $li.addClass('active');
+
+            query = getQuery();
+
+            // change the query in the layer to update the map
+            layer.setSQL(query);
+          });
+}
+
 function getQuery() {
-  if(date !== 'all' && tipo !== 'all') {
+  if(date !== 'all' && tipo !== 'all' && distance !== 'all') {
     query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
-    + " AND date between current_timestamp AND current_timestamp + interval '" + date + "'";
+    + " AND date between current_timestamp AND current_timestamp + interval '" + date + "'"
+    + " AND ST_Distance(the_geom::geography, ST_SetSRID(ST_Point(" + lat + ", " + lon + "),4326)::geography) <= " + distance;
   }else if (tipo !== 'all') {
     query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
   }else if (date !== 'all') {
@@ -111,7 +135,8 @@ function main() {
       sublayers.push(sublayer);
       filterByType(sublayer);
       filterByDate(sublayer);
-      detectUserLocation();
+      filterByDistance(sublayer);
+      // detectUserLocation();
     }).on('error', function() {
       //log the error
     });
