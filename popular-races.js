@@ -1,7 +1,11 @@
 var map;
 var tipo = 'all';
 var date = 'all';
+var distance = 'all';
 var query;
+
+var lat;
+var lon;
 
 function filterByType(layer) {
   var sql = new cartodb.SQL({ user: 'documentation' });
@@ -43,14 +47,41 @@ function filterByDate(layer) {
           });
 }
 
+function filterByDistance(layer) {
+  var sql = new cartodb.SQL({ user: 'documentation' });
+
+  var $options = $('#distance_selector li');
+  $options.click(function(e) {
+            // get the area of the selected layer
+            var $li = $(e.target);
+            distance = $li.attr('data');
+
+            // deselect all and select the clicked one
+            $options.removeClass('active');
+            $li.addClass('active');
+
+            query = getQuery();
+
+            // change the query in the layer to update the map
+            layer.setSQL(query);
+          });
+}
+
+//ToDO: Two cases to be implemented: (date && tipo) and (date && distance) 
 function getQuery() {
-  if(date !== 'all' && tipo !== 'all') {
+  if(date !== 'all' && tipo !== 'all' &&  distance != 'all') {
     query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
-    + " AND date between current_timestamp AND current_timestamp + interval '" + date + "'";
+    + " AND date between current_timestamp AND current_timestamp + interval '" + date + "'" 
+    + " AND (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography, the_geom::geography)/1000) <= " + distance;
+  }else if (tipo !== 'all' && distance != 'all') {
+    query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
+    + " AND (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography, the_geom::geography)/1000) <= " + distance;;
   }else if (tipo !== 'all') {
     query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
   }else if (date !== 'all') {
     query = "SELECT * FROM carreras_coru_u00f1a WHERE date between current_timestamp AND current_timestamp + interval '" + date + "'";
+  }else if (distance !== 'all') {
+    query = "SELECT * FROM carreras_coru_u00f1a WHERE (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography, the_geom::geography)/1000) <= " + distance;
   }else {
     query = "SELECT * FROM carreras_coru_u00f1a";
   }
@@ -111,6 +142,7 @@ function main() {
       sublayers.push(sublayer);
       filterByType(sublayer);
       filterByDate(sublayer);
+      filterByDistance(sublayer);
       detectUserLocation();
     }).on('error', function() {
       //log the error
