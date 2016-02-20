@@ -67,25 +67,69 @@ function filterByDistance(layer) {
           });
 }
 
-//ToDO: Two cases to be implemented: (date && tipo) and (date && distance) 
 function getQuery() {
   if(date !== 'all' && tipo !== 'all' &&  distance != 'all') {
-    query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
-    + " AND date between current_timestamp AND current_timestamp + interval '" + date + "'" 
-    + " AND (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography, the_geom::geography)/1000) <= " + distance;
-  }else if (tipo !== 'all' && distance != 'all') {
-    query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
-    + " AND (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography, the_geom::geography)/1000) <= " + distance;;
-  }else if (tipo !== 'all') {
-    query = "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
-  }else if (date !== 'all') {
-    query = "SELECT * FROM carreras_coru_u00f1a WHERE date between current_timestamp AND current_timestamp + interval '" + date + "'";
-  }else if (distance !== 'all') {
-    query = "SELECT * FROM carreras_coru_u00f1a WHERE (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography, the_geom::geography)/1000) <= " + distance;
-  }else {
-    query = "SELECT * FROM carreras_coru_u00f1a";
+    query = getTypeAndDateAndDistanceQuery();
+  } else if (tipo !== 'all' && date != 'all') {
+    query = getTypeAndDateQuery();
+  } else if (tipo !== 'all' && distance != 'all') {
+    query = getTypeAndDistanceQuery();
+  } else if (date != 'all' && distance != 'all') {
+    query = getDateAndDistanceQuery();
+  } else if (tipo !== 'all') {
+    query = getTypeQuery();
+  } else if (date !== 'all') {
+    query = getDateQuery();
+  } else if (distance !== 'all') {
+    query = getDistanceQuery();
+  } else {
+    query = getAllDataQuery();
   }
   return query;
+}
+
+function getAllDataQuery() {
+  return "SELECT * FROM carreras_coru_u00f1a";
+}
+
+function getTypeQuery() {
+  return "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'";
+}
+
+function getDateQuery() {
+  return "SELECT * FROM carreras_coru_u00f1a WHERE date between current_timestamp"
+  + " AND current_timestamp + interval '" + date + "'";
+}
+
+function getDistanceQuery() {
+  return "SELECT * FROM carreras_coru_u00f1a"
+  + " WHERE (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography,"
+  + " the_geom::geography)/1000) <= " + distance;
+}
+
+function getTypeAndDateAndDistanceQuery() {
+    return "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
+    + " AND date between current_timestamp AND current_timestamp + interval '" + date + "'"
+    + " AND (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography,"
+    + " the_geom::geography)/1000) <= " + distance;
+}
+
+function getTypeAndDateQuery() {
+  return "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
+  + " AND date between current_timestamp AND current_timestamp + interval '" + date + "'"
+}
+
+function getTypeAndDistanceQuery() {
+  return "SELECT * FROM carreras_coru_u00f1a WHERE tipo = '" + tipo + "'"
+  + " AND (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography,"
+  + " the_geom::geography)/1000) <= " + distance;
+}
+
+function getDateAndDistanceQuery() {
+  return "SELECT * FROM carreras_coru_u00f1a WHERE date between current_timestamp"
+  + " AND current_timestamp + interval '" + date + "'"
+  + " AND (ST_Distance(CDB_LatLng(" + lat + "," + lon + ")::geography,"
+  + " the_geom::geography)/1000) <= " + distance;
 }
 
 // credit: http://html5doctor.com/finding-your-position-with-geolocation/
@@ -93,7 +137,7 @@ function detectUserLocation(){
   if (navigator.geolocation) {
     var timeoutVal = 10 * 1000 * 1000;
     navigator.geolocation.watchPosition(
-      mapToPosition, 
+      mapToPosition,
       alertError,
       { enableHighAccuracy: true, timeout: timeoutVal, maximumAge: 0 }
     );
@@ -101,9 +145,9 @@ function detectUserLocation(){
   else {
     alert("Geolocation is not supported by this browser");
   }
-  
+
   function alertError(error) {
-    var errors = { 
+    var errors = {
       1: 'Permission denied',
       2: 'Position unavailable',
       3: 'Request timeout'
@@ -120,7 +164,7 @@ function mapToPosition(position) {
 }
 
 function main() {
-  map = new L.Map('map', { 
+  map = new L.Map('map', {
         center: [43.36,-8.41],
         zoom: 14
       })
