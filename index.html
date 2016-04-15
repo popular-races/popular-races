@@ -70,7 +70,7 @@
 
             <!-- Modal Body -->
             <div class="modal-body">
-              <form role="form">
+              <form role="form" id="new_race_form">
                 <div class="form-group">
                   <label for="race_name">Nombre</label>
                   <input type="email" class="form-control" id="race_name">
@@ -89,15 +89,15 @@
                   <input type="text" class="form-control" id="race_location">
                 </div>
                 <p><b>Tipo</b></p>
-                <div class="radio-inline">
+                <div class="radio-inline" id="race_type">
                   <label>
-                  <input type="radio" name="opciones" id="running" value="running" checked>
+                  <input type="radio" name="opciones" id="Running" value="Running" checked>
                     Running
                   </label>
                 </div>
                 <div class="radio-inline">
                   <label>
-                    <input type="radio" name="opciones" id="triatlon" value="triatlon">
+                    <input type="radio" name="opciones" id="Triatlón" value="Triatlón">
                     Triatlón
                   </label>
                 </div>
@@ -109,7 +109,7 @@
               <button type="button" class="btn btn-default" data-dismiss="modal">
                 Close
               </button>
-              <button type="button" class="btn btn-primary">
+              <button type="button" class="btn btn-primary" onclick="addNewRace()">
                 Save changes
               </button>
             </div>

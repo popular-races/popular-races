@@ -163,6 +163,29 @@ function mapToPosition(position) {
   new L.CircleMarker([lat,lon],{radius: 4}).addTo(map);
 }
 
+function addNewRace() {
+  var raceName = $('#race_name').val();
+  var raceDistance = $("#race_distance").val();
+  var raceDate = $('#race_date').val();
+  var raceLocation = $('#race_location').val();
+  var raceType = $("form input[type='radio']:checked").val();
+
+  var dt = new Date(raceDate);
+  var dateUTC = dt.toUTCString();
+  var dateLocale = dt.toLocaleDateString();
+
+  var api_key = '1c2a1d97a8027051895922a9b51573cdd52553e8';
+  var sql = "https://psanxiao.cartodb.com/api/v2/sql?q=INSERT INTO carreras_coru_u00f1a (the_geom, nombre, distancia, fecha, tipo, date)"
+  + " VALUES (cdb_geocode_namedplace_point('" + raceLocation + "'), '" + raceName + "', '" + raceDistance + "', '" + dateLocale + "', '" + raceType + "', '" + dateUTC + "')&api_key=" + api_key;
+
+  $.post( sql, function( data ) {
+     console.log(data);
+   });
+
+   $('#myModalHorizontal').modal('toggle');
+   alert("New race added");
+}
+
 function main() {
   map = new L.Map('map', {
         center: [43.36,-8.41],
@@ -192,35 +215,5 @@ function main() {
       //log the error
     });
 }
-
-// function main() {
-//   cartodb.createVis('map', 'http://psanxiao.cartodb.com/api/v2/viz/f283f2c0-8539-11e3-a110-3085a9a9563c/viz.json', {
-//     shareable: false,
-//     title: false,
-//     description: false,
-//     search: false,
-//     tiles_loader: true,
-//     mobile_layout: true,
-//     center_lat: 43.36,
-//     center_lon: -8.41,
-//     zoom: 14
-//   })
-//   .done(function(vis, layers) {
-//             // layer 0 is the base layer, layer 1 is cartodb layer
-//             // setInteraction is disabled by default
-//             layers[1].setInteraction(true);
-//             layers[1].on('featureOver', function(e, pos, latlng, data) {
-//               cartodb.log.log(e, pos, latlng, data);
-//             });
-
-//             var subLayer = layers[1].getSubLayer(0);
-//             filterByType(subLayer);
-//             filterByDate(subLayer);
-//             detectUserLocation();
-//           })
-//   .error(function(err) {
-//     console.log(err);
-//   });
-// }
 
 window.onload = main;
