@@ -159,7 +159,7 @@ function detectUserLocation(){
 function mapToPosition(position) {
   lon = position.coords.longitude;
   lat = position.coords.latitude;
-  map.setView(new L.LatLng(lat,lon), 14);
+  //map.setView(new L.LatLng(lat,lon), 14);
   new L.CircleMarker([lat,lon],{radius: 4}).addTo(map);
 }
 
@@ -188,8 +188,8 @@ function addNewRace() {
 
 function main() {
   map = new L.Map('map', {
-        center: [43.36,-8.41],
-        zoom: 14
+        center: [42.91,-7.78],
+        zoom: 9
       })
 
       L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
@@ -210,10 +210,10 @@ function main() {
       filterByType(sublayer);
       filterByDate(sublayer);
       filterByDistance(sublayer);
-      detectUserLocation();
+
     }).on('error', function() {
       //log the error
     });
 }
-
+detectUserLocation();
 window.onload = main;
