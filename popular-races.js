@@ -1,4 +1,5 @@
 var map;
+var sublayer;
 var tipo = 'all';
 var date = 'all';
 var distance = 'all';
@@ -47,8 +48,14 @@ function filterByDate(layer) {
           });
 }
 
-function filterByDistance(layer) {
+function filterByDistance(layer, custom) {
   var sql = new cartodb.SQL({ user: 'documentation' });
+
+  if (custom) {
+    query = getQuery();
+    layer.setSQL(query);
+    return;
+  }
 
   var $options = $('#distance_selector li');
   $options.click(function(e) {
@@ -186,6 +193,10 @@ function addNewRace() {
    alert("New race added");
 }
 
+function filterByCustomDistance() {
+  distance = $('#custom_distance').val();
+  filterByDistance(sublayer, true);
+}
 function main() {
   map = new L.Map('map', {
         center: [42.91,-7.78],
@@ -204,12 +215,12 @@ function main() {
     .addTo(map)
     .on('done', function(layer) {
 
-      var sublayer = layer.getSubLayer(0);
+      sublayer = layer.getSubLayer(0);
 
       sublayers.push(sublayer);
       filterByType(sublayer);
       filterByDate(sublayer);
-      filterByDistance(sublayer);
+      filterByDistance(sublayer, false);
 
     }).on('error', function() {
       //log the error
