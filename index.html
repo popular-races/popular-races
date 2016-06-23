@@ -16,7 +16,7 @@
 
   <body>
 
-      <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="navbar  navbar-default navbar-static-top" role="navigation">
         <a class="navbar-brand" href="#">Popular Races</a>
         <a class="navbar-brand" href="#" data-toggle="modal" data-target="#myModalHorizontal">Añadir</a>
       </div>
@@ -38,6 +38,8 @@
           <li data="all" class="list-group-item active">TODAS</li>
           <li data="1 month" class="list-group-item">1 mes</sup></li>
           <li data="3 month" class="list-group-item">3 meses</sup></li>
+          <li data="6 month" class="list-group-item">6 meses</sup></li>
+          <li data="12 month" class="list-group-item">12 meses</sup></li>
         </ul>
       </div>
       <br/>
@@ -51,7 +53,7 @@
         </ul>
         <h5 style="margin-left: 45px">Radio personalizado (kms):</h5>
         <div class="input-group">
-          <input style="margin-left: 40px; width: 80%" type="text" class="form-control" id="custom_distance">
+          <input type="text" class="form-control" id="custom_distance">
           <span class="input-group-btn">
             <button class="btn btn-primary" type="button" onclick="filterByCustomDistance()">Filtrar</button>
           </span>

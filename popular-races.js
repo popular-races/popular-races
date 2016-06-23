@@ -169,7 +169,7 @@ function mapToPosition(position) {
   //map.setView(new L.LatLng(lat,lon), 14);
   new L.CircleMarker([lat,lon],{radius: 4}).addTo(map);
 }
-var sql;
+
 function addNewRace() {
   var raceName = $('#race_name').val();
   var raceDistance = $("#race_distance").val();
@@ -184,7 +184,7 @@ function addNewRace() {
   var dateLocale = dt.toLocaleDateString();
 
   var api_key = '1c2a1d97a8027051895922a9b51573cdd52553e8';
-  sql = "https://psanxiao.cartodb.com/api/v2/sql?q=INSERT INTO carreras_coru_u00f1a (the_geom, nombre, distancia, fecha, tipo, date)"
+  var sql = "https://psanxiao.cartodb.com/api/v2/sql?q=INSERT INTO carreras_coru_u00f1a (the_geom, nombre, distancia, fecha, tipo, date)"
   + " VALUES (cdb_geocode_street_point('" + raceAdress + "', '" + raceCouncil + "', '" + raceProvince + "', 'Spain' ), '"
   + raceName + "', '" + raceDistance + "', '" + dateLocale + "', '" + raceType + "', '" + dateUTC + "')&api_key=" + api_key;
 
@@ -193,7 +193,7 @@ function addNewRace() {
    });
 
    $('#myModalHorizontal').modal('toggle');
-   alert("New race added");
+   alert("Carrera añadida correctamente");
 }
 
 function filterByCustomDistance() {
@@ -206,7 +206,7 @@ function main() {
         zoom: 9
       })
 
-      L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
         attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
       }).addTo(map);
 

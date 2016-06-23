@@ -37,6 +37,24 @@ html, body {
   background-color: #428bca;
 }
 
+#distance_selector li:hover {
+  background-color: #F0F0F0;
+  cursor: pointer;
+}
+
+#distance_selector li.active:hover {
+  background-color: #428bca;
+}
+
+#custom_distance {
+  margin-left: 40px;
+  width: 80%;
+}
+
+#show_position {
+  margin-left: 45px;
+}
+
 .modal-body .form-horizontal .col-sm-2,
 .modal-body .form-horizontal .col-sm-10 {
   width: 100%
