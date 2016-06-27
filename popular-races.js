@@ -167,7 +167,6 @@ function mapToPosition(position) {
   lon = position.coords.longitude;
   lat = position.coords.latitude;
   //map.setView(new L.LatLng(lat,lon), 14);
-  new L.CircleMarker([lat,lon],{radius: 4}).addTo(map);
 }
 
 function addNewRace() {
@@ -207,7 +206,7 @@ function main() {
       })
 
       L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-        attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
       }).addTo(map);
 
   var layerUrl = 'http://psanxiao.cartodb.com/api/v2/viz/f283f2c0-8539-11e3-a110-3085a9a9563c/viz.json';
@@ -228,6 +227,13 @@ function main() {
     }).on('error', function() {
       //log the error
     });
+
+    L.control.locate({
+      strings: {
+       title: "Mi ubicación"
+     }
+    }).addTo(map);
 }
+
 detectUserLocation();
 window.onload = main;
