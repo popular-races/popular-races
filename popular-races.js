@@ -173,6 +173,7 @@ function addNewRace() {
   var raceName = $('#race_name').val();
   var raceDistance = $("#race_distance").val();
   var raceDate = $('#race_date').val();
+  var raceWeb = $('#race_web').val();
   var raceType = $("form input[type='radio']:checked").val();
   var raceAdress = $('#race_address').val();
   var raceCouncil = $('#race_council').val();
@@ -183,9 +184,9 @@ function addNewRace() {
   var dateLocale = dt.toLocaleDateString();
 
   var api_key = '1c2a1d97a8027051895922a9b51573cdd52553e8';
-  var sql = "https://psanxiao.cartodb.com/api/v2/sql?q=INSERT INTO carreras_coru_u00f1a (the_geom, nombre, distancia, fecha, tipo, date)"
+  var sql = "https://psanxiao.cartodb.com/api/v2/sql?q=INSERT INTO carreras_coru_u00f1a (the_geom, nombre, distancia, fecha, web, tipo, date)"
   + " VALUES (cdb_geocode_street_point('" + raceAdress + "', '" + raceCouncil + "', '" + raceProvince + "', 'Spain' ), '"
-  + raceName + "', '" + raceDistance + "', '" + dateLocale + "', '" + raceType + "', '" + dateUTC + "')&api_key=" + api_key;
+  + raceName + "', '" + raceDistance + "', '" + dateLocale + "', '" + raceWeb + "', '" + raceType + "', '" + dateUTC + "')&api_key=" + api_key;
 
   $.post( sql, function( data ) {
      console.log(data);
