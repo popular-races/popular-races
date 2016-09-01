@@ -47,8 +47,8 @@ html, body {
 }
 
 #custom_distance {
-  margin-left: 40px;
-  width: 80%;
+  /*margin-left: 40px;*/
+  width: 95%;
 }
 
 #show_position {
