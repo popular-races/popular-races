@@ -210,7 +210,7 @@ function main() {
         zoom: 9
       })
 
-      L.tileLayer('https://vector.mapzen.com/osm/{layers}/{z}/{x}/{y}.{format}?api_key=vector-tiles-xxxxxxx',
+      L.tileLayer('https://vector.mapzen.com/osm/{layers}/{z}/{x}/{y}.{format}?api_key=vector-tiles-'+ api_key,
        { attribution: '<a href="https://www.mapzen.com/rights">Attribution.</a>. Data &copy;<a href="https://openstreetmap.org/copyright">OSM</a> contributors.'
      }).addTo(map);
 
