@@ -143,7 +143,7 @@ function getDateAndDistanceQuery() {
 function detectUserLocation(){
   if (navigator.geolocation) {
     var timeoutVal = 10 * 1000 * 1000;
-    navigator.geolocation.watchPosition(
+    navigator.geolocation.getCurrentPosition(
       mapToPosition,
       alertError,
       { enableHighAccuracy: true, timeout: timeoutVal, maximumAge: 0 }
@@ -210,9 +210,13 @@ function main() {
         zoom: 9
       })
 
-      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
-      }).addTo(map);
+      L.tileLayer('https://vector.mapzen.com/osm/{layers}/{z}/{x}/{y}.{format}?api_key=vector-tiles-xxxxxxx',
+       { attribution: '<a href="https://www.mapzen.com/rights">Attribution.</a>. Data &copy;<a href="https://openstreetmap.org/copyright">OSM</a> contributors.'
+     }).addTo(map);
+
+      // L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+      //   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
+      // }).addTo(map);
 
   var layerUrl = 'https://psanxiao.cartodb.com/api/v2/viz/f283f2c0-8539-11e3-a110-3085a9a9563c/viz.json';
 
