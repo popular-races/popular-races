@@ -207,7 +207,8 @@ function filterByCustomDistance() {
 function main() {
   map = new L.Map('map', {
         center: [42.91,-7.78],
-        zoom: 9
+        zoom: 9,
+        https: true
       })
 
       L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
