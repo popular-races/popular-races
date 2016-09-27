@@ -179,10 +179,18 @@ function addNewRace() {
   var raceCouncil = $('#race_council').val();
   var raceProvince = $('#race_province').val();
 
-  var raceDateParts = raceDate.split("/");
-  var dt = new Date(parseInt(raceDateParts[2], 10),
+  if (raceDate.includes("-")) {
+    var raceDateParts = raceDate.split("-");
+    var dt = new Date(parseInt(raceDateParts[0], 10)+1,
+                  parseInt(raceDateParts[1], 10)-1,
+                  parseInt(raceDateParts[2], 10));
+  }else {
+    var raceDateParts = raceDate.split("/");
+    var dt = new Date(parseInt(raceDateParts[2], 10),
                   parseInt(raceDateParts[1], 10)-1,
                   parseInt(raceDateParts[0], 10)+1);
+  }
+
   //var dt = new Date(raceDate);
   var dateUTC = dt.toUTCString();
   var dateLocale = dt.toLocaleDateString();
