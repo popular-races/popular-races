@@ -179,26 +179,23 @@ function addNewRace() {
   var raceCouncil = $('#race_council').val();
   var raceProvince = $('#race_province').val();
 
-  if (raceDate.includes("-")) {
-    var raceDateParts = raceDate.split("-");
-    var dt = new Date(parseInt(raceDateParts[0], 10)+1,
-                  parseInt(raceDateParts[1], 10)-1,
-                  parseInt(raceDateParts[2], 10));
-  }else {
+  if (raceDate.includes("/")) {
     var raceDateParts = raceDate.split("/");
     var dt = new Date(parseInt(raceDateParts[2], 10),
                   parseInt(raceDateParts[1], 10)-1,
                   parseInt(raceDateParts[0], 10)+1);
+    var dateLocale = raceDate;
+  } else {
+    var dt = new Date(raceDate);
+    var dateLocale = dt.toLocaleDateString();
   }
 
-  //var dt = new Date(raceDate);
   var dateUTC = dt.toUTCString();
-  var dateLocale = dt.toLocaleDateString();
-
+  
   var api_key = '1c2a1d97a8027051895922a9b51573cdd52553e8';
   var sql = "https://psanxiao.cartodb.com/api/v2/sql?q=INSERT INTO carreras_coru_u00f1a (the_geom, nombre, distancia, fecha, web, tipo, date)"
   + " VALUES (cdb_geocode_street_point('" + raceAdress + "', '" + raceCouncil + "', '" + raceProvince + "', 'Spain' ), '"
-  + raceName + "', '" + raceDistance + "', '" + raceDate + "', '" + raceWeb + "', '" + raceType + "', '" + dateUTC + "')&api_key=" + api_key;
+  + raceName + "', '" + raceDistance + "', '" + dateLocale + "', '" + raceWeb + "', '" + raceType + "', '" + dateUTC + "')&api_key=" + api_key;
 
   $.post( sql, function( data ) {
      console.log(data);
