@@ -21,6 +21,7 @@
       <div class="navbar  navbar-default navbar-static-top" role="navigation">
         <a class="navbar-brand" href="#">Popular Races</a>
         <a class="navbar-brand" href="#" data-toggle="modal" data-target="#myModalHorizontal">Añadir</a>
+        <a class="navbar-brand" href="#" data-toggle="modal" data-target="#myModalAbout">About</a>
       </div>
 
     <div class="col-sm-10 blog-main" id="map"></div>
@@ -148,6 +149,41 @@
               <button type="button" class="btn btn-primary" onclick="addNewRace()">
                 Save changes
               </button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="myModalAbout" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Acerca de Popular Races
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+              <p>
+                Popular Races es un proyecto personal de <a href="http://psanxiao.com">Pablo Sanxiao</a>
+                con el fin de probar diferentes tecnologías, como explico en este <a href="http://psanxiao.com/Popular-races-una-web-de-carreras-geolocalizadas-low-cost">post</a>.
+               </p>
+               <p>
+                 Los datos de las carreras se almacenan en una tabla de mi cuenta gratuita de <a href="http://carto.com">CARTO</a>. Si has llegado hasta aquí y quieres probarla puedes dar de alta carreras,
+                 al menos hasta que se alcance el límite de almacenamiento.
+               </p>
+               <p>
+                 Para cualquier duda, sugerencia de mejora o lo que se te ocurra puedes ponerte en contacto conmigo a través del mail: psanxiao ARROBA gmail.com
+               </p>
             </div>
         </div>
       </div>
